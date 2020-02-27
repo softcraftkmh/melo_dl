@@ -7,6 +7,12 @@ require("colors");
 
 console.log("APP starts".yellow);
 
+const getSongName = ({ name_eng, name_mm }) =>
+  (name_eng ? name_eng : name_mm) || "";
+
+const getSongNameFull = ({ str_artists, songName }) =>
+  `${"" + str_artists} - ${"" + songName}.mp3`;
+
 (async () => {
   let urls = [];
   for (let index = 1; index <= 1088; index++) {
@@ -23,8 +29,8 @@ console.log("APP starts".yellow);
     const existingFiles = fs.readdirSync(path.join(__dirname, "/dist"));
     const songs = data
       .filter(({ full_file, str_artists, name_eng, name_mm }) => {
-        const songName = (name_eng ? name_eng : name_mm) || "";
-        const songNameFull = `${"" + str_artists} - ${"" + songName}.mp3`;
+        const songName = getSongName({ name_eng, name_mm });
+        const songNameFull = getSongNameFull({ str_artists, songName });
         if (
           full_file &&
           str_artists &&
@@ -38,8 +44,8 @@ console.log("APP starts".yellow);
         }
       })
       .map(({ full_file, str_artists, name_eng, name_mm }) => {
-        const songName = (name_eng ? name_eng : name_mm) || "";
-        const songNameFull = `${"" + str_artists} - ${"" + songName}.mp3`;
+        const songName = getSongName({ name_eng, name_mm });
+        const songNameFull = getSongNameFull({ str_artists, songName });
         return {
           songNameFull,
           fileUrl: full_file
